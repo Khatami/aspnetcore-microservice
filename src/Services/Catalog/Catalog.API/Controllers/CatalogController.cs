@@ -5,6 +5,7 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Net;
 using System.Threading.Tasks;
 
 namespace Catalog.API.Controllers
@@ -23,10 +24,12 @@ namespace Catalog.API.Controllers
 		}
 
 		[HttpGet]
-		[Route("")]
-		public async Task<IEnumerable<Product>> GetProducts()
+		[ProducesResponseType(typeof(IEnumerable<Product>), (int)HttpStatusCode.OK)]
+		public async Task<ActionResult<IEnumerable<Product>>> GetProducts()
 		{
-			return await _productRepository.Get();
+			var products = await _productRepository.Get();
+
+			return Ok(products);
 		}
 	}
 }
