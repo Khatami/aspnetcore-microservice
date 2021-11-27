@@ -6,7 +6,7 @@ namespace Catalog.API.Entities
 	public class Product
 	{
 		/// <summary>
-		/// MongoDB stores objects as BSON objects which are a binary JSON, but that is a topic for a different blog post
+		/// MongoDB stores objects as BSON objects which are a binary JSON
 		/// </summary>
 		[BsonId]
 		[BsonRepresentation(BsonType.ObjectId)] // 24 Characters 

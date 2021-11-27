@@ -59,7 +59,7 @@ namespace Catalog.API.Repositories
 
 		public async Task<bool> Delete(string id)
 		{
-			FilterDefinition<Product> filter = Builders<Product>
+			var filter = Builders<Product>
 				.Filter
 				.Eq(p => p.Id, id);
 
