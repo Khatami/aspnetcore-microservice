@@ -32,7 +32,7 @@ public static class Extensions
 {
 	public static void AddRepositories(this IServiceCollection serviceCollection)
 	{
-		serviceCollection.AddTransient<IProductRepository, ProductRepository>();
-		serviceCollection.AddTransient<ICatalogContext, CatalogContext>();
+		serviceCollection.AddScoped<IProductRepository, ProductRepository>();
+		serviceCollection.AddScoped<ICatalogContext, CatalogContext>();
 	}
 }

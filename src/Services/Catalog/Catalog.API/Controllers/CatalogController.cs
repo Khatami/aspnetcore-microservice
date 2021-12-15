@@ -1,13 +1,6 @@
-﻿using Catalog.API.Data;
-using Catalog.API.Entities;
+﻿using Catalog.API.Entities;
 using Catalog.API.Repositories;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
-using MongoDB.Driver;
-using System.Collections.Generic;
-using System.Net;
-using System.Threading.Tasks;
 
 namespace Catalog.API.Controllers
 {
@@ -66,6 +59,20 @@ namespace Catalog.API.Controllers
 			await _productRepository.Create(product);
 
 			return CreatedAtRoute("GetProduct", new { id = product.Id }, product);
+		}
+
+		[HttpPut]
+		[ProducesResponseType(typeof(bool), StatusCodes.Status200OK)]
+		public async Task<IActionResult> UpdateProduct([FromBody] Product product)
+		{
+			return Ok(await _productRepository.Update(product));
+		}
+
+		[HttpDelete("{id:length(24)}")]
+		[ProducesResponseType(typeof(bool), StatusCodes.Status200OK)]
+		public async Task<IActionResult> DeleteProduct(string id)
+		{
+			return Ok(await _productRepository.Delete(id));
 		}
 	}
 }
