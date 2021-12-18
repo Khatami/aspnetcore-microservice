@@ -9,8 +9,9 @@ namespace Catalog.API.Data
 		public CatalogContext(IConfiguration configuration)
 		{
 			var databaseSetting = configuration.GetSection("DatabaseSettings");
+			var connectionString = databaseSetting.GetValue<string>("ConnectionString");
 
-			var client = new MongoClient(databaseSetting.GetValue<string>("ConnectionString"));
+			var client = new MongoClient(connectionString);
 
 			//It returns the database; if it does not exist, a new database will be created
 			var database = client.GetDatabase(databaseSetting.GetValue<string>("DatabaseName"));
