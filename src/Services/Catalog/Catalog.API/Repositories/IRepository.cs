@@ -1,7 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
-
-namespace Catalog.API.Repositories
+﻿namespace Catalog.API.Repositories
 {
 	public interface IRepository<T>
 	{
