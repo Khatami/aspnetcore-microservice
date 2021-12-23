@@ -14,9 +14,4 @@ if (app.Environment.IsDevelopment())
 	app.UseSwaggerUI();
 }
 
-app.MapGet("/", async context =>
-{
-	await context.Response.WriteAsync("Hello");
-});
-
 app.Run();
