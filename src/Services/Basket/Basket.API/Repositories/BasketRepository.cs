@@ -36,6 +36,5 @@ namespace Basket.API.Repositories
 		{
 			await _distributedCache.RemoveAsync(UserName);
 		}
-
 	}
 }
