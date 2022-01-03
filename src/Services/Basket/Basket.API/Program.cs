@@ -4,8 +4,10 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllers();
+
+var connectionString = builder.Configuration.GetSection("CacheSettings").GetValue<string>("ConnectionString");
 builder.Services.AddStackExchangeRedisCache(options => {
-	options.Configuration = builder.Configuration.GetSection("CacheSettings").GetValue<string>("ConnectionString");
+	options.Configuration = connectionString;
 });
 builder.Services.AddScoped<IBasketRepository, BasketRepository>();
 

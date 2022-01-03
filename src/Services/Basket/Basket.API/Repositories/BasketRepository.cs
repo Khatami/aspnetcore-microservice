@@ -19,7 +19,7 @@ namespace Basket.API.Repositories
 
 			if (string.IsNullOrEmpty(basket))
 			{
-				throw new ArgumentNullException(nameof(basket));
+				return null;
 			}
 
 			return JsonConvert.DeserializeObject<ShoppingCart>(basket);
