@@ -19,11 +19,11 @@ services:
       - redis_data:/data
 
   discountdb:
-    container_name: discountdb,
+    container_name: discountdb
     environment:
-      - POSTGRES_USER:admin
-      - POSTGRES_PASSWORD:admin1234
-      - POSTGRES_DB:DiscountDB
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD=admin1234
+      - POSTGRES_DB=DiscountDB
     restart: always
     ports:
       - "5432:5432"
@@ -33,13 +33,14 @@ services:
   pgadmin:
     container_name: pgadmin
     environment:
-      - PGADMIN_DEFAULT_EMAIL:admin@aspnetrun.com
-      - PGADMIN_DEFAULT_PASSWORD:admin1234
+      - PGADMIN_DEFAULT_EMAIL=admin@aspnetrun.com
+      - PGADMIN_DEFAULT_PASSWORD=admin1234
     restart: always
     ports:
       - "5050:80"
     volumes:
       - pgadmin_data:/root/.pgadmin
+      - pgadmin_data:/var/lib/pgadmin
 
   portainer:
     container_name: portainer
