@@ -1,6 +1,7 @@
 ﻿using Discount.API.Entities;
 using Discount.API.Repositories;
 using Microsoft.AspNetCore.Mvc;
+using System.Net;
 
 namespace Discount.API.Controllers
 {
@@ -15,7 +16,7 @@ namespace Discount.API.Controllers
 			_discountRepository = discountRepository;
 		}
 
-		[HttpGet("{productName", Name = nameof(GetDiscount))]
+		[HttpGet("{productName}", Name = nameof(GetDiscount))]
 		[ProducesResponseType(typeof(Coupon), StatusCodes.Status200OK)]
 		public async Task<ActionResult<Coupon>> GetDiscount(string productName)
 		{
