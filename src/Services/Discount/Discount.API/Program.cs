@@ -1,7 +1,17 @@
+using Npgsql;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllers();
+
+builder.Services.AddScoped<NpgsqlConnection>(service =>
+{
+	string connectionString = builder.Configuration.GetSection("DatabaseSettings")
+		.GetValue<string>("ConnectionString");
+
+	return new NpgsqlConnection(connectionString);
+});
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
