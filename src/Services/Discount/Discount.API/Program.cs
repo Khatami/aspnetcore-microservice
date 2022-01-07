@@ -1,3 +1,4 @@
+using Discount.API.Repositories;
 using Npgsql;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -5,6 +6,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllers();
 
+builder.Services.AddScoped<IDiscountRepository, DiscountRepository>();
 builder.Services.AddScoped<NpgsqlConnection>(service =>
 {
 	string connectionString = builder.Configuration.GetSection("DatabaseSettings")
