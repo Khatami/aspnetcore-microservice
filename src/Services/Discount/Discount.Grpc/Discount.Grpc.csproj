@@ -7,13 +7,17 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+		<None Remove="Protos\discount.proto" />
+	</ItemGroup>
+
+	<ItemGroup>
 		<PackageReference Include="Dapper" Version="2.0.123" />
 		<PackageReference Include="Grpc.AspNetCore" Version="2.41.0" />
 		<PackageReference Include="Npgsql" Version="6.0.2" />
 	</ItemGroup>
 
 	<ItemGroup>
-		<Folder Include="Services\" />
+		<Protobuf Include="Protos\discount.proto" GrpcServices="Server" />
 	</ItemGroup>
 
 </Project>
