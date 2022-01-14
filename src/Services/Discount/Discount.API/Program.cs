@@ -2,14 +2,15 @@ using Discount.API.Extensions;
 using Discount.API.Repositories;
 using Discount.API.Services;
 using Npgsql;
+using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllers();
 builder.Services.AddGrpc();
+builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
 
-builder.Services.AddScoped<IDiscountRepository, DiscountRepository>();
 builder.Services.AddScoped<NpgsqlConnection>(service =>
 {
 	string connectionString = builder.Configuration.GetSection("DatabaseSettings")
@@ -17,6 +18,8 @@ builder.Services.AddScoped<NpgsqlConnection>(service =>
 
 	return new NpgsqlConnection(connectionString);
 });
+
+builder.Services.AddScoped<IDiscountRepository, DiscountRepository>();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
