@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Discount.API.Entities;
 using Discount.API.Protos;
 using Discount.API.Repositories;
 using Grpc.Core;
@@ -28,26 +29,50 @@ namespace Discount.API.Services
 					(new Status(StatusCode.NotFound,$"Discount with ProductName={request.ProductName} is not found."));
 			}
 
-			_logger.LogInformation($"Discount is retrieved for ProductName: {coupon.ProductName}, Amount: {coupon.Amount}");
+			_logger.LogInformation
+				($"Discount is retrieved for ProductName: {coupon.ProductName}, Amount: {coupon.Amount}");
 
 			var couponModel = _mapper.Map<CouponModel>(coupon);
 
 			return couponModel;
 		}
 
-		public override Task<CouponModel> CreateDiscount(CreateDiscountRequest request, ServerCallContext context)
+		public override async Task<CouponModel> CreateDiscount(CreateDiscountRequest request, ServerCallContext context)
 		{
-			return base.CreateDiscount(request, context);
+			var coupon = _mapper.Map<Coupon>(request.Coupon);
+
+			await _discountRepository.CreateDiscount(coupon);
+
+			_logger.LogInformation
+				($"Discount is created successfully for ProductName: {coupon.ProductName}");
+
+			var couponModel = _mapper.Map<CouponModel>(coupon);
+			return couponModel;
 		}
 
-		public override Task<CouponModel> UpdateDiscount(UpdateDiscountRequest request, ServerCallContext context)
+		public override async Task<CouponModel> UpdateDiscount(UpdateDiscountRequest request, ServerCallContext context)
 		{
-			return base.UpdateDiscount(request, context);
+			var coupon = _mapper.Map<Coupon>(request.Coupon);
+
+			await _discountRepository.UpdateDiscount(coupon);
+
+			_logger.LogInformation
+				($"Discount is updated successfully for ProductName: {coupon.ProductName}");
+
+			var couponModel = _mapper.Map<CouponModel>(coupon);
+			return couponModel;
 		}
 
-		public override Task<DeleteDiscountResponse> DeleteDiscount(DeleteDiscountRequest request, ServerCallContext context)
+		public override async Task<DeleteDiscountResponse> DeleteDiscount(DeleteDiscountRequest request, ServerCallContext context)
 		{
-			return base.DeleteDiscount(request, context);
+			var deleted = await _discountRepository.DeleteDiscount(request.ProductName);
+
+			var respose = new DeleteDiscountResponse()
+			{
+				Success = deleted
+			};
+
+			return respose;
 		}
 	}
 }
