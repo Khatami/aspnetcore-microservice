@@ -1,11 +1,13 @@
 using Discount.API.Extensions;
 using Discount.API.Repositories;
+using Discount.API.Services;
 using Npgsql;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllers();
+builder.Services.AddGrpc();
 
 builder.Services.AddScoped<IDiscountRepository, DiscountRepository>();
 builder.Services.AddScoped<NpgsqlConnection>(service =>
@@ -32,5 +34,6 @@ if (app.Environment.IsDevelopment())
 }
 
 app.MapControllers();
+app.MapGrpcService<DiscountService>();
 
 app.Run();
