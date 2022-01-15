@@ -42,6 +42,17 @@ services:
       - pgadmin_data:/root/.pgadmin
       - pgadmin_data:/var/lib/pgadmin
 
+  mongo.express:
+    container_name: mongoexpress
+    environment:
+      - ME_CONFIG_OPTIONS_EDITORTHEME=ambiance
+      - ME_CONFIG_MONGODB_SERVER=catalogdb
+      - ME_CONFIG_BASICAUTH_USERNAME=admin
+      - ME_CONFIG_BASICAUTH_PASSWORD=admin1234
+    restart: always
+    ports:
+      - "8081:8081"
+
   portainer:
     container_name: portainer
     restart: always
@@ -53,7 +64,7 @@ services:
       - portainer_data:/data
 
   catalog.api:
-    container_name: catalog.api
+    container_name: catalogapi
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - DatabaseSettings__ConnectionString=mongodb://catalogdb:27017
@@ -67,6 +78,7 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - CacheSettings__ConnectionString=basketdb:6379
+      - GrpcSettings__DiscountUrl=http://discountapi:8002
     depends_on:
       - basketdb
     ports:

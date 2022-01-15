@@ -6,7 +6,7 @@
     <ProjectGuid>3caece89-c486-4591-b19d-9f063fefa3c7</ProjectGuid>
     <DockerLaunchAction>LaunchBrowser</DockerLaunchAction>
     <DockerServiceUrl>{Scheme}://localhost:{ServicePort}/swagger</DockerServiceUrl>
-    <DockerServiceName>discount.api</DockerServiceName>
+    <DockerServiceName>basket.api</DockerServiceName>
     <DockerComposeProjectName>microservices</DockerComposeProjectName>
   </PropertyGroup>
   <ItemGroup>
