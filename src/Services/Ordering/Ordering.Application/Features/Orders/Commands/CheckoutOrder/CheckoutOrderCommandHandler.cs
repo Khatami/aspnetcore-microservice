@@ -33,13 +33,21 @@ namespace Ordering.Application.Features.Orders.Commands.CheckoutOrder
 
 			_logger.LogInformation($"Order {newOrder.Id} is successfully created.");
 
-			await SendMail(newOrder);
+			try
+			{
+				await _emailService.SendEmail(new Email()
+				{
+					To = "hamedkhatami@outlook.com",
+					Subject = "Order was created",
+					Body = "Order was created"
+				});
+			}
+			catch (Exception ex)
+			{
+				_logger.LogError($"Order {newOrder.Id} failed due to an error with the mail service: {ex.Message}");
+			}
 
 			return newOrder.Id;
-		}
-
-		private async Task SendMail(Order order)
-		{
 		}
 	}
 }
