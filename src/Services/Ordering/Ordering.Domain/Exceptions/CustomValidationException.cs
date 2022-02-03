@@ -2,15 +2,15 @@
 
 namespace Ordering.Domain.Exceptions
 {
-	public class ValidationException : Exception
+	public class CustomValidationException : Exception
 	{
-		public ValidationException()
+		public CustomValidationException()
 			: base("One or more validation failures have occured.")
 		{
 			Errors = new Dictionary<string, string[]>();
 		}
 
-		public ValidationException(IEnumerable<ValidationFailure> failures)
+		public CustomValidationException(IEnumerable<ValidationFailure> failures)
 		{
 			Errors = failures
 				.GroupBy(e => e.PropertyName, e => e.ErrorMessage)

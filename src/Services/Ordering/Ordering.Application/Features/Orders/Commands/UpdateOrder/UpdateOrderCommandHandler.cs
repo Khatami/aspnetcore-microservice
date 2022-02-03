@@ -30,7 +30,7 @@ namespace Ordering.Application.Features.Orders.Commands.UpdateOrder
 
 			if (orderToUpdate == null)
 			{
-				throw new NotFoundException(nameof(Order), request.Id);
+				throw new CustomNotFoundException(nameof(Order), request.Id);
 			}
 
 			//_mapper.Map(request, orderToUpdate, typeof(UpdateOrderCommand), typeof(Order));

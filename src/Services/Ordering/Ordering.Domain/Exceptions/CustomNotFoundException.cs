@@ -1,8 +1,8 @@
 ﻿namespace Ordering.Domain.Exceptions
 {
-	public class NotFoundException : Exception
+	public class CustomNotFoundException : Exception
 	{
-		public NotFoundException(string name, object key)
+		public CustomNotFoundException(string name, object key)
 			: base($"Entity \"{name}\" ({key}) was not found")
 		{
 
