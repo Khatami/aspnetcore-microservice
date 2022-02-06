@@ -10,7 +10,7 @@
     <ProjectReference Include="..\Ordering.Domain\Ordering.Domain.csproj">
       <ReferenceOutputAssembly></ReferenceOutputAssembly>
       <ExcludeAssets></ExcludeAssets>
-      <PrivateAssets>all</PrivateAssets>
+      <PrivateAssets></PrivateAssets>
     </ProjectReference>
   </ItemGroup>
 
@@ -22,7 +22,7 @@
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
     <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="10.0.1">
-      <PrivateAssets></PrivateAssets>
+      <PrivateAssets>all</PrivateAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="6.0.0">
       <PrivateAssets>all</PrivateAssets>
