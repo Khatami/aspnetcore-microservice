@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using MediatR;
 using Microsoft.Extensions.Logging;
-using Ordering.Application.Contracts.Persistence;
+using Ordering.Application.Contracts.Respositories;
 using Ordering.Domain.Entities;
 using Ordering.Domain.Exceptions;
 

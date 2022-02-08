@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Ordering.Application.Contracts.Persistence;
+using Ordering.Application.Contracts.Respositories;
 using Ordering.Domain.Common;
 using Ordering.Infrastructure.Persistence;
 using System.Linq.Expressions;

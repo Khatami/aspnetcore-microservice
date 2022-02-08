@@ -1,4 +1,4 @@
-﻿using Ordering.Application.Contracts.Persistence;
+﻿using Ordering.Application.Contracts.Respositories;
 using Ordering.Domain.Entities;
 using Ordering.Infrastructure.Persistence;
 

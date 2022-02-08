@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using MediatR;
-using Ordering.Application.Contracts.Persistence;
+using Ordering.Application.Contracts.Respositories;
 
 namespace Ordering.Application.Features.Orders.Queries.GetOrdersList
 {
