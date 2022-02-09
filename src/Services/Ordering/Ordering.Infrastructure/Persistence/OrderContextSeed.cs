@@ -3,9 +3,9 @@ using Ordering.Domain.Entities;
 
 namespace Ordering.Infrastructure.Persistence
 {
-	internal class OrderContextSeed
+	public class OrderContextSeed
 	{
-		internal static async Task SeedAsync(OrderContext context, ILogger<OrderContextSeed> logger)
+		public static async Task SeedAsync(OrderContext context, ILogger<OrderContextSeed> logger)
 		{
 			if (context.Orders.Any() == false)
 			{
