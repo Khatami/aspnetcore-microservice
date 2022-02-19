@@ -10,7 +10,7 @@ using Ordering.Infrastructure.Respositories;
 
 namespace Ordering.Infrastructure
 {
-	public static class ApplicationServiceRegistration
+	public static class InfrastructureServiceRegistration
 	{
 		public static IServiceCollection AddInfrastructureServices(this IServiceCollection services,
 			IConfiguration configuration)
