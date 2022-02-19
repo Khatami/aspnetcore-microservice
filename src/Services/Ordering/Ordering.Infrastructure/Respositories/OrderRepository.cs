@@ -4,7 +4,7 @@ using Ordering.Infrastructure.Persistence;
 
 namespace Ordering.Infrastructure.Respositories
 {
-	public class OrderRepository : RepositoryBase<Order>, IOrderRepository
+	public class OrderRepository : AsyncRepository<Order>, IOrderRepository
 	{
 		public OrderRepository(OrderContext orderContext)
 			: base(orderContext)

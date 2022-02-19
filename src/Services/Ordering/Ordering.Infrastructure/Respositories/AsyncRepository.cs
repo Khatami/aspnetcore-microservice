@@ -6,11 +6,11 @@ using System.Linq.Expressions;
 
 namespace Ordering.Infrastructure.Respositories
 {
-	public class RepositoryBase<T> : IAsyncRepository<T> where T : EntityBase
+	public class AsyncRepository<T> : IAsyncRepository<T> where T : EntityBase
 	{
 		protected readonly OrderContext _dbContext;
 
-		public RepositoryBase(OrderContext dbContext)
+		public AsyncRepository(OrderContext dbContext)
 		{
 			_dbContext = dbContext ?? throw new ArgumentNullException(nameof(dbContext));
 		}
