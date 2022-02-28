@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Ordering.Domain.Common;
 using Ordering.Domain.Entities;
+using System.Reflection;
 
 namespace Ordering.Infrastructure.Persistence
 {
@@ -31,6 +32,12 @@ namespace Ordering.Infrastructure.Persistence
 			}
 
 			return base.SaveChangesAsync(cancellationToken);
+		}
+
+		protected override void OnModelCreating(ModelBuilder modelBuilder)
+		{
+			modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
+			base.OnModelCreating(modelBuilder);
 		}
 	}
 }
