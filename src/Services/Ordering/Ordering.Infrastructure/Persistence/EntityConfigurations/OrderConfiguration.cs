@@ -25,39 +25,30 @@ namespace Ordering.Infrastructure.Persistence.EntityConfigurations
 				.HasMaxLength(50);
 
 			builder.Property(q => q.AddressLine)
-				.IsRequired()
 				.HasMaxLength(50);
 
 			builder.Property(q => q.Country)
-				.IsRequired()
 				.HasMaxLength(50);
 
 			builder.Property(q => q.State)
-				.IsRequired()
 				.HasMaxLength(50);
 
 			builder.Property(q => q.ZipCode)
-				.IsRequired()
 				.HasMaxLength(50);
 
 			builder.Property(q => q.CardName)
-				.IsRequired()
 				.HasMaxLength(50);
 
 			builder.Property(q => q.CardNumber)
-				.IsRequired()
 				.HasMaxLength(50);
 
 			builder.Property(q => q.Expiration)
-				.IsRequired()
 				.HasMaxLength(50);
 
 			builder.Property(q => q.CVV)
-				.IsRequired()
 				.HasMaxLength(4);
 
-			builder.Property(q => q.PaymentMethod)
-				.IsRequired();
+			builder.Property(q => q.PaymentMethod);
 		}
 	}
 }
