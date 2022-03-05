@@ -1,5 +1,6 @@
 ﻿using FluentValidation;
 using MediatR;
+using Ordering.Application.Features.Orders.Commands.UpdateOrder;
 using Ordering.Domain.Exceptions;
 
 namespace Ordering.Application.Behaviours
@@ -7,9 +8,9 @@ namespace Ordering.Application.Behaviours
 	public class ValidationBehaviour<TRequest, TResponse>
 		 : IPipelineBehavior<TRequest, TResponse> where TRequest : IRequest<TResponse>
 	{
-		private readonly IEnumerable<IValidator<IRequest>> _validators;
+		private readonly IEnumerable<IValidator<TRequest>> _validators;
 
-		public ValidationBehaviour(IEnumerable<IValidator<IRequest>> validators)
+		public ValidationBehaviour(IEnumerable<IValidator<TRequest>> validators)
 		{
 			_validators = validators;
 		}
