@@ -16,6 +16,9 @@ services:
   pgadmin:
     image: dpage/pgadmin4
 
+  rabbitmq:
+    image: rabbitmq:3-management-alpine
+
   mongo.express:
     image: mongo-express
 
@@ -53,3 +56,4 @@ volumes:
   postgres_data:
   pgadmin_data:
   sqlserver_data:
+  rabbitmq_data:

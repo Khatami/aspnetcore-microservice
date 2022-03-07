@@ -41,6 +41,15 @@ services:
     volumes:
       - sqlserver_data:/var/opt/mssql/data
 
+  rabbitmq:
+    container_name: rabbitmq
+    restart: always
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq
+
   pgadmin:
     container_name: pgadmin
     environment:
