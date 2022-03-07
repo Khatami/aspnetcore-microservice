@@ -1,26 +1,36 @@
 using Basket.API.GrpcServices;
 using Basket.API.Repositories;
 using Discount.API.Protos;
+using MassTransit;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllers();
 
+// Redis Configuration
 var connectionString = builder.Configuration.GetSection("CacheSettings").GetValue<string>("ConnectionString");
 builder.Services.AddStackExchangeRedisCache(options =>
 {
 	options.Configuration = connectionString;
 });
 
+// Grpc Configuration
 var discountGrpcUrl = builder.Configuration.GetSection("GrpcSettings").GetValue<string>("DiscountUrl");
 builder.Services.AddGrpcClient<DiscountProtoService.DiscountProtoServiceClient>(option =>
 {
 	option.Address = new Uri(discountGrpcUrl);
 });
 
-builder.Services.AddScoped<DiscountGrpcService>();
+// MassTransit - RabbitMQ Configuration
+builder.Services.AddMassTransit(config => {
+	config.UsingRabbitMq((context, config) => {
+		config.Host(builder.Configuration["EventBusSettings:HostAddress"]);
+	});
+});
+builder.Services.AddMassTransitHostedService();
 
+builder.Services.AddScoped<DiscountGrpcService>();
 builder.Services.AddScoped<IBasketRepository, BasketRepository>();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
