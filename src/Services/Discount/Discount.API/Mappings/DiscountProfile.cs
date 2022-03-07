@@ -2,7 +2,7 @@
 using Discount.API.Entities;
 using Discount.API.Protos;
 
-namespace Discount.API.Mapper
+namespace Discount.API.Mappings
 {
 	public class DiscountProfile : Profile
 	{
