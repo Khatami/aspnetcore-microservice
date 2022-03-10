@@ -1,8 +1,8 @@
 version: '3.4'
 
 services:
-  catalogdb:
-    container_name: catalogdb
+  mongo:
+    container_name: mongo
     restart: always
     ports:
       - "27017:27017"
@@ -10,16 +10,16 @@ services:
       - mongo_data:/data/db
       - mongo_data:/data/configdb
 
-  basketdb:
-    container_name: basketdb
+  redis:
+    container_name: redis
     restart: always
     ports:
       - "6379:6370"
     volumes:
       - redis_data:/data
 
-  discountdb:
-    container_name: discountdb
+  postgres:
+    container_name: postgres
     environment:
       - POSTGRES_USER=admin
       - POSTGRES_PASSWORD=admin1234
@@ -30,8 +30,8 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data
 
-  orderdb:
-    container_name: orderdb
+  mssql:
+    container_name: mssql
     environment:
       - SA_PASSWORD=Hamed1991*Khatami
       - ACCEPT_EULA=Y
@@ -66,7 +66,7 @@ services:
     container_name: mongo.express
     environment:
       - ME_CONFIG_OPTIONS_EDITORTHEME=ambiance
-      - ME_CONFIG_MONGODB_SERVER=catalogdb
+      - ME_CONFIG_MONGODB_SERVER=mongo
       - ME_CONFIG_BASICAUTH_USERNAME=admin
       - ME_CONFIG_BASICAUTH_PASSWORD=admin1234
     restart: always
@@ -83,13 +83,46 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
       - portainer_data:/data
 
+  elasticsearch:
+    container_name: elasticsearch
+    environment:
+      - http.host=0.0.0.0
+      - transport.host=localhost
+      - network.host=0.0.0.0
+      - xpack.security.enabled=false
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    mem_limit: 1g
+
+  graylog:
+    container_name: graylog
+    environment: 
+      - GRAYLOG_PASSWORD_SECRET=Hamedkhatami*1991
+      - GRAYLOG_ROOT_PASSWORD_SHA2=2970345a6cf26191c011f82f2e87900c4ca750ddcdba063de642b657896dd3da
+    restart: always
+    depends_on:
+      - mongo
+      - elasticsearch
+    ports:
+      # Graylog web interface and REST API
+      - 9001:9000
+    volumes:
+      - graylog_data:/usr/share/graylog/data
+
   catalog.api:
     container_name: catalog.api
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-      - DatabaseSettings__ConnectionString=mongodb://catalogdb:27017
+      - DatabaseSettings__ConnectionString=mongodb://mongo:27017
+      - GrayLog__Host=graylog
+      - GrayLog__Port=12201
+      - GrayLog__Protocol=UDP
+      - LogSource__LogSource=Catalog.API
     depends_on:
-      - catalogdb
+      - mongo
     ports:
       - "8000:80"
 
@@ -97,11 +130,15 @@ services:
     container_name: basket.api
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-      - CacheSettings__ConnectionString=basketdb:6379
+      - CacheSettings__ConnectionString=redis:6379
       - GrpcSettings__DiscountUrl=http://discount.api:5003
       - EventBusSettings__HostAddress=amqp://guest:guest@rabbitmq:5672
+      - GrayLog__Host=graylog
+      - GrayLog__Port=12201
+      - GrayLog__Protocol=UDP
+      - LogSource__LogSource=Basket.API
     depends_on:
-      - basketdb
+      - redis
     ports:
       - "8001:80"
 
@@ -109,9 +146,13 @@ services:
     container_name: discount.api
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-      - "DatabaseSettings__ConnectionString=Server=discountdb;Port=5432;Database=DiscountDB;User Id=admin;Password=admin1234;"
+      - "DatabaseSettings__ConnectionString=Server=postgres;Port=5432;Database=DiscountDB;User Id=admin;Password=admin1234;"
+      - GrayLog__Host=graylog
+      - GrayLog__Port=12201
+      - GrayLog__Protocol=UDP
+      - LogSource__LogSource=Discount.API
     depends_on:
-      - discountdb
+      - postgres
     ports:
       - "8002:5002"
       - "8003:5003"
@@ -120,9 +161,13 @@ services:
     container_name: ordering.api
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-      - ConnectionStrings__OrderingConnectionString=Server=orderdb;Database=OrderDb;User Id=sa;Password=Hamed1991*Khatami
+      - ConnectionStrings__OrderingConnectionString=Server=mssql;Database=OrderDb;User Id=sa;Password=Hamed1991*Khatami
       - EventBusSettings__HostAddress=amqp://guest:guest@rabbitmq:5672
+      - GrayLog__Host=graylog
+      - GrayLog__Port=12201
+      - GrayLog__Protocol=UDP
+      - LogSource__LogSource=Ordering.API
     depends_on:
-     - orderdb
+     - mssql
     ports:
      - "8004:80"

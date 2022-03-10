@@ -1,7 +1,14 @@
 using Catalog.API.Data;
 using Catalog.API.Repositories;
+using Gelf.Extensions.Logging;
 
 var builder = WebApplication.CreateBuilder(args);
+// greylog
+builder.Services.Configure<GelfLoggerOptions>(builder.Configuration.GetSection("GrayLog"));
+builder.Host.ConfigureLogging(logging =>
+{
+	logging.AddGelf();
+});
 
 // Add services to the container.
 builder.Services.AddControllers();

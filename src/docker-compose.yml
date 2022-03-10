@@ -1,16 +1,16 @@
 version: '3.4'
 
 services:
-  catalogdb:
+  mongo:
     image: mongo
 
-  basketdb:
+  redis:
     image: redis:alpine
 
-  discountdb:
+  postgres:
     image: postgres
 
-  orderdb:
+  mssql:
     image: mcr.microsoft.com/mssql/server:2017-latest
 
   pgadmin:
@@ -24,6 +24,12 @@ services:
 
   portainer:
     image: portainer/portainer-ce
+
+  elasticsearch:
+    image: elasticsearch:7.9.2
+
+  graylog:
+    image: graylog/graylog:4.1-jre11
 
   catalog.api:
     image: ${DOCKER_REGISTRY-}catalogapi
@@ -57,3 +63,4 @@ volumes:
   pgadmin_data:
   sqlserver_data:
   rabbitmq_data:
+  graylog_data:

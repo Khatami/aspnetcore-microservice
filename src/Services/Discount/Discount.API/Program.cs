@@ -1,10 +1,18 @@
 using Discount.API.Extensions;
 using Discount.API.Repositories;
 using Discount.API.Services;
+using Gelf.Extensions.Logging;
 using Npgsql;
 using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
+
+// greylog
+builder.Services.Configure<GelfLoggerOptions>(builder.Configuration.GetSection("GrayLog"));
+builder.Host.ConfigureLogging(logging =>
+{
+	logging.AddGelf();
+});
 
 // Add services to the container.
 builder.Services.AddControllers();

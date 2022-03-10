@@ -1,10 +1,17 @@
 using Basket.API.GrpcServices;
 using Basket.API.Repositories;
 using Discount.API.Protos;
+using Gelf.Extensions.Logging;
 using MassTransit;
 using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
+// greylog
+builder.Services.Configure<GelfLoggerOptions>(builder.Configuration.GetSection("GrayLog"));
+builder.Host.ConfigureLogging(logging =>
+{
+	logging.AddGelf();
+});
 
 // Add services to the container.
 builder.Services.AddControllers();

@@ -1,13 +1,21 @@
 using EventBus.Messages.Common;
-using EventBus.Messages.Events;
+using Gelf.Extensions.Logging;
 using MassTransit;
 using Ordering.API.EventBusConsumer;
 using Ordering.API.Extensions;
 using Ordering.Application;
 using Ordering.Infrastructure;
 using Ordering.Infrastructure.Persistence;
+using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
+
+// greylog
+builder.Services.Configure<GelfLoggerOptions>(builder.Configuration.GetSection("GrayLog"));
+builder.Host.ConfigureLogging(logging =>
+{
+	logging.AddGelf();
+});
 
 builder.Services.AddControllers();
 builder.Services.AddApplicationServices();
@@ -33,7 +41,11 @@ builder.Services.AddMassTransit(config =>
 		});
 	});
 });
+
 builder.Services.AddMassTransitHostedService();
+
+//Automapper
+builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
 
 var app = builder.Build();
 app.MigrateDatabase<OrderContext>((context, services) =>
