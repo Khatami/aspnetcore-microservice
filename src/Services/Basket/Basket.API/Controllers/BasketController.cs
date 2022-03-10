@@ -65,6 +65,9 @@ namespace Basket.API.Controllers
 		[ProducesResponseType(StatusCodes.Status400BadRequest)]
 		public async Task<IActionResult> Checkout([FromBody] BasketCheckout basketCheckout)
 		{
+			var i = 0;
+			var b = 12 / i;
+
 			// get existing basket
 			var basket = await _basketRepository.GetBasket(basketCheckout.UserName);
 
@@ -75,7 +78,7 @@ namespace Basket.API.Controllers
 
 			// send BasketCheckoutEvent to rabbitMQ
 			var eventMessage = _mapper.Map<BasketCheckoutEvent>(basketCheckout);
-			basketCheckout.TotalPrice = basket.TotalPrice;
+			eventMessage.TotalPrice = basket.TotalPrice;
 			await _publishEndpoint.Publish(eventMessage);
 
 			// remove the basket
