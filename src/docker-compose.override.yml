@@ -4,8 +4,8 @@ services:
   mongo:
     container_name: mongo
     environment:
-      - MONGO_INITDB_ROOT_USERNAME=admin
-      - MONGO_INITDB_ROOT_PASSWORD=${Password}
+      - MONGO_INITDB_ROOT_USERNAME=${Mongo_UserName}
+      - MONGO_INITDB_ROOT_PASSWORD=${Mongo_Password}
     restart: always
     ports:
       - "27017:27017"
@@ -24,8 +24,8 @@ services:
   postgres:
     container_name: postgres
     environment:
-      - POSTGRES_USER=admin
-      - POSTGRES_PASSWORD=${Password}
+      - POSTGRES_USER=${Postgres_UserName}
+      - POSTGRES_PASSWORD=${Postgres_Password}
       - POSTGRES_DB=DiscountDB
     restart: always
     ports:
@@ -36,7 +36,7 @@ services:
   mssql:
     container_name: mssql
     environment:
-      - SA_PASSWORD=${Password}
+      - SA_PASSWORD=${MSSQL_SAPassword}
       - ACCEPT_EULA=Y
     restart: always
     ports:
@@ -59,8 +59,8 @@ services:
   pgadmin:
     container_name: pgadmin
     environment:
-      - PGADMIN_DEFAULT_EMAIL=admin@admin.com
-      - PGADMIN_DEFAULT_PASSWORD=${Password}
+      - PGADMIN_DEFAULT_EMAIL=${PGAdmin_Email}
+      - PGADMIN_DEFAULT_PASSWORD=${PGAdmin_Password}
     restart: always
     ports:
       - "5050:80"
@@ -73,10 +73,10 @@ services:
     environment:
       - ME_CONFIG_OPTIONS_EDITORTHEME=ambiance
       - ME_CONFIG_MONGODB_SERVER=mongo
-      - ME_CONFIG_BASICAUTH_USERNAME=admin
-      - ME_CONFIG_BASICAUTH_PASSWORD=${Password}
-      - ME_CONFIG_MONGODB_AUTH_USERNAME=admin
-      - ME_CONFIG_MONGODB_AUTH_PASSWORD=${Password}
+      - ME_CONFIG_BASICAUTH_USERNAME=${Mongo_Exress_UserName}
+      - ME_CONFIG_BASICAUTH_PASSWORD=${Mongo_Exress_Password}
+      - ME_CONFIG_MONGODB_AUTH_USERNAME=${Mongo_UserName}
+      - ME_CONFIG_MONGODB_AUTH_PASSWORD=${Mongo_Password}
     restart: always
     depends_on:
       - mongo
@@ -110,9 +110,9 @@ services:
   graylog:
     container_name: graylog
     environment: 
-      - GRAYLOG_PASSWORD_SECRET=${Password}
-      - GRAYLOG_ROOT_PASSWORD_SHA2=${Password_SHA2}
-      - GRAYLOG_MONGODB_URI=mongodb://admin:${Password}@mongo:27017/graylog?authSource=admin
+      - GRAYLOG_PASSWORD_SECRET=${GRAYLOG_Password_Secret}
+      - GRAYLOG_ROOT_PASSWORD_SHA2=${GRAYLOG_Root_Password_SHA2}
+      - GRAYLOG_MONGODB_URI=mongodb://${Mongo_UserName}:${Mongo_Password}@mongo:27017/graylog?authSource=${Mongo_UserName}
     restart: always
     depends_on:
       - mongo
@@ -120,14 +120,22 @@ services:
     ports:
       # Graylog web interface and REST API
       - 9001:9000
+      # Syslog TCP
+      #- 1514:1514
+      # Syslog UDP
+      #- 1514:1514/udp
+      # GELF TCP
+      #- 12201:12201
+      # GELF UDP
+      - 12201:12201/udp
     volumes:
       - graylog_data:/usr/share/graylog/data
 
   catalog.api:
     container_name: catalog.api
     environment:
-      - ASPNETCORE_ENVIRONMENT=Development
-      - DatabaseSettings__ConnectionString=mongodb://admin:${Password}@mongo:27017
+      - ASPNETCORE_ENVIRONMENT=${Environment}
+      - DatabaseSettings__ConnectionString=mongodb://${Mongo_UserName}:${Mongo_Password}@mongo:27017
       - GrayLog__Host=graylog
       - GrayLog__Port=12201
       - GrayLog__Protocol=UDP
@@ -140,7 +148,7 @@ services:
   basket.api:
     container_name: basket.api
     environment:
-      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_ENVIRONMENT=${Environment}
       - CacheSettings__ConnectionString=redis:6379
       - GrpcSettings__DiscountUrl=http://discount.api:5003
       - EventBusSettings__HostAddress=amqp://${RabbitMQ_UserName}:${RabbitMQ_Password}@rabbitmq:5672
@@ -156,8 +164,8 @@ services:
   discount.api:
     container_name: discount.api
     environment:
-      - ASPNETCORE_ENVIRONMENT=Development
-      - "DatabaseSettings__ConnectionString=Server=postgres;Port=5432;Database=DiscountDB;User Id=admin;Password=${Password};"
+      - ASPNETCORE_ENVIRONMENT=${Environment}
+      - "DatabaseSettings__ConnectionString=Server=postgres;Port=5432;Database=DiscountDB;User Id=${Postgres_UserName};Password=${Postgres_Password};"
       - GrayLog__Host=graylog
       - GrayLog__Port=12201
       - GrayLog__Protocol=UDP
@@ -171,8 +179,8 @@ services:
   ordering.api:
     container_name: ordering.api
     environment:
-      - ASPNETCORE_ENVIRONMENT=Development
-      - ConnectionStrings__OrderingConnectionString=Server=mssql;Database=OrderDb;User Id=sa;Password=${Password}
+      - ASPNETCORE_ENVIRONMENT=${Environment}
+      - ConnectionStrings__OrderingConnectionString=Server=mssql;Database=OrderDb;User Id=sa;Password=${MSSQL_SAPassword}
       - EventBusSettings__HostAddress=amqp://${RabbitMQ_UserName}:${RabbitMQ_Password}@rabbitmq:5672
       - GrayLog__Host=graylog
       - GrayLog__Port=12201
