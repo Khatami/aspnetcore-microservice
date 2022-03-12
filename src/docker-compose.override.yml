@@ -47,8 +47,8 @@ services:
   rabbitmq:
     container_name: rabbitmq
     environment:
-      - RABBITMQ_DEFAULT_USER=admin
-      - RABBITMQ_DEFAULT_PASS=${Password}
+      - RABBITMQ_DEFAULT_USER=${RabbitMQ_UserName}
+      - RABBITMQ_DEFAULT_PASS=${RabbitMQ_Password}
     restart: always
     ports:
       - "5672:5672"
@@ -143,7 +143,7 @@ services:
       - ASPNETCORE_ENVIRONMENT=Development
       - CacheSettings__ConnectionString=redis:6379
       - GrpcSettings__DiscountUrl=http://discount.api:5003
-      - EventBusSettings__HostAddress=amqp://guest:guest@rabbitmq:5672
+      - EventBusSettings__HostAddress=amqp://${RabbitMQ_UserName}:${RabbitMQ_Password}@rabbitmq:5672
       - GrayLog__Host=graylog
       - GrayLog__Port=12201
       - GrayLog__Protocol=UDP
@@ -173,7 +173,7 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ConnectionStrings__OrderingConnectionString=Server=mssql;Database=OrderDb;User Id=sa;Password=${Password}
-      - EventBusSettings__HostAddress=amqp://guest:guest@rabbitmq:5672
+      - EventBusSettings__HostAddress=amqp://${RabbitMQ_UserName}:${RabbitMQ_Password}@rabbitmq:5672
       - GrayLog__Host=graylog
       - GrayLog__Port=12201
       - GrayLog__Protocol=UDP

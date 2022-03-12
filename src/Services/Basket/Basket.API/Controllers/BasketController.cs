@@ -65,9 +65,6 @@ namespace Basket.API.Controllers
 		[ProducesResponseType(StatusCodes.Status400BadRequest)]
 		public async Task<IActionResult> Checkout([FromBody] BasketCheckout basketCheckout)
 		{
-			var i = 0;
-			var b = 12 / i;
-
 			// get existing basket
 			var basket = await _basketRepository.GetBasket(basketCheckout.UserName);
 
