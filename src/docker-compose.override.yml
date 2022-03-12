@@ -112,7 +112,7 @@ services:
     environment: 
       - GRAYLOG_PASSWORD_SECRET=${Password}
       - GRAYLOG_ROOT_PASSWORD_SHA2=${Password_SHA2}
-      - MONGODB_URI=mongodb://admin:${Password}@mongo:27017/graylog
+      - GRAYLOG_MONGODB_URI=mongodb://admin:${Password}@mongo:27017/graylog?authSource=admin
     restart: always
     depends_on:
       - mongo
