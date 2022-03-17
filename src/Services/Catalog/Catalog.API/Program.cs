@@ -3,6 +3,7 @@ using Catalog.API.Repositories;
 using Gelf.Extensions.Logging;
 
 var builder = WebApplication.CreateBuilder(args);
+
 // greylog
 builder.Services.Configure<GelfLoggerOptions>(builder.Configuration.GetSection("GrayLog"));
 builder.Host.ConfigureLogging(logging =>
