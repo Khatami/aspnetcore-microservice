@@ -1,0 +1,24 @@
+{
+  "profiles": {
+    "Docker Compose": {
+      "commandName": "DockerCompose",
+      "commandVersion": "1.0",
+      "serviceActions": {
+        "basket.api": "StartDebugging",
+        "catalog.api": "StartDebugging",
+        "discount.api": "StartDebugging",
+        "elasticsearch": "StartWithoutDebugging",
+        "graylog": "StartWithoutDebugging",
+        "mongo": "StartWithoutDebugging",
+        "mongo.express": "StartWithoutDebugging",
+        "mssql": "StartWithoutDebugging",
+        "ordering.api": "StartDebugging",
+        "pgadmin": "StartWithoutDebugging",
+        "portainer": "StartWithoutDebugging",
+        "postgres": "StartWithoutDebugging",
+        "rabbitmq": "StartWithoutDebugging",
+        "redis": "StartWithoutDebugging"
+      }
+    }
+  }
+}
