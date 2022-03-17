@@ -158,6 +158,7 @@ services:
       - LogSource__LogSource=Basket.API
     depends_on:
       - redis
+      - rabbitmq
     ports:
       - "8001:80"
 
@@ -188,5 +189,6 @@ services:
       - LogSource__LogSource=Ordering.API
     depends_on:
      - mssql
+     - rabbitmq
     ports:
      - "8004:80"
