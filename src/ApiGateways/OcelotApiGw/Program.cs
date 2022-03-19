@@ -1,5 +1,5 @@
 using Gelf.Extensions.Logging;
-using Microsoft.AspNetCore.Builder;
+using Ocelot.Cache.CacheManager;
 using Ocelot.DependencyInjection;
 using Ocelot.Middleware;
 
@@ -18,7 +18,9 @@ builder.Host.ConfigureLogging(logging =>
 });
 
 // ocelog
-builder.Services.AddOcelot();
+builder.Services
+	.AddOcelot()
+	.AddCacheManager(settings => settings.WithDictionaryHandle());
 
 var app = builder.Build();
 
