@@ -37,7 +37,6 @@ builder.Services.AddMassTransit(config => {
 		config.Host(builder.Configuration["EventBusSettings:HostAddress"]);
 	});
 });
-builder.Services.AddMassTransitHostedService();
 
 // Automapper
 builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
