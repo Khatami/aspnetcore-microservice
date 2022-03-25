@@ -1,6 +1,16 @@
+using Gelf.Extensions.Logging;
 using Shopping.Aggregator.Services;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddControllers();
+
+// greylog
+builder.Services.Configure<GelfLoggerOptions>(builder.Configuration.GetSection("GrayLog"));
+builder.Host.ConfigureLogging(logging =>
+{
+	logging.AddGelf();
+});
 
 // Add services to the container.
 builder.Services.AddHttpClient<ICatalogService, CatalogService>(c =>
@@ -24,5 +34,7 @@ if (app.Environment.IsDevelopment())
 	app.UseSwagger();
 	app.UseSwaggerUI();
 }
+
+app.MapControllers();
 
 app.Run();

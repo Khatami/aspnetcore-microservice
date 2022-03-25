@@ -142,6 +142,7 @@ services:
       - LogSource__LogSource=Catalog.API
     depends_on:
       - mongo
+      - graylog
     ports:
       - "8000:80"
 
@@ -159,6 +160,7 @@ services:
     depends_on:
       - redis
       - rabbitmq
+      - graylog
     ports:
       - "8001:80"
 
@@ -173,6 +175,7 @@ services:
       - LogSource__LogSource=Discount.API
     depends_on:
       - postgres
+      - graylog
     ports:
       - "8002:5002"
       - "8003:5003"
@@ -190,17 +193,42 @@ services:
     depends_on:
      - mssql
      - rabbitmq
+     - graylog
     ports:
      - "8004:80"
+
+  shopping.aggregator:
+    container_name: shopping.aggregator
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ApiSettings__CatalogUrl=http://catalog.api
+      - ApiSettings__BasketUrl=http://basket.api
+      - ApiSettings__OrderingUrl=http://ordering.api
+      - GrayLog__Host=graylog
+      - GrayLog__Port=12201
+      - GrayLog__Protocol=UDP
+      - LogSource__LogSource=Shopping.Aggregator
+    depends_on: 
+      - ordering.api
+      - basket.api
+      - catalog.api
+      - graylog
+    ports:
+      - "8005:80"
 
   ocelotapigw:
     container_name: ocelotapigw
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
+      - GrayLog__Host=graylog
+      - GrayLog__Port=12201
+      - GrayLog__Protocol=UDP
+      - LogSource__LogSource=OcelotApiGw
     depends_on:
       - catalog.api
       - basket.api
       - discount.api
       - ordering.api
+      - graylog
     ports:
       - "8010:80"

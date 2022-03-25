@@ -5,11 +5,6 @@ using Ocelot.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Host.ConfigureAppConfiguration((hostingContext, config) =>
-{
-	config.AddJsonFile($"ocelot.{hostingContext.HostingEnvironment.EnvironmentName}.json", true, true);
-});
-
 // graylog
 builder.Services.Configure<GelfLoggerOptions>(builder.Configuration.GetSection("GrayLog"));
 builder.Host.ConfigureLogging(logging =>
@@ -17,7 +12,12 @@ builder.Host.ConfigureLogging(logging =>
 	logging.AddGelf();
 });
 
-// ocelog
+// ocelot
+builder.Host.ConfigureAppConfiguration((hostingContext, config) =>
+{
+	config.AddJsonFile($"ocelot.{hostingContext.HostingEnvironment.EnvironmentName}.json", true, true);
+});
+
 builder.Services
 	.AddOcelot()
 	.AddCacheManager(settings => settings.WithDictionaryHandle());
