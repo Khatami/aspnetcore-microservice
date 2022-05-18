@@ -7,28 +7,28 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace AspnetRunBasics
 {
-    public class CartModel : PageModel
-    {
-        private readonly ICartRepository _cartRepository;
+	public class CartModel : PageModel
+	{
+		private readonly ICartRepository _cartRepository;
 
-        public CartModel(ICartRepository cartRepository)
-        {
-            _cartRepository = cartRepository ?? throw new ArgumentNullException(nameof(cartRepository));
-        }
+		public CartModel(ICartRepository cartRepository)
+		{
+			_cartRepository = cartRepository ?? throw new ArgumentNullException(nameof(cartRepository));
+		}
 
-        public Entities.Cart Cart { get; set; } = new Entities.Cart();        
+		public Entities.Cart Cart { get; set; } = new Entities.Cart();
 
-        public async Task<IActionResult> OnGetAsync()
-        {
-            Cart = await _cartRepository.GetCartByUserName("test");            
+		public async Task<IActionResult> OnGetAsync()
+		{
+			Cart = await _cartRepository.GetCartByUserName("test");
 
-            return Page();
-        }
+			return Page();
+		}
 
-        public async Task<IActionResult> OnPostRemoveToCartAsync(int cartId, int cartItemId)
-        {
-            await _cartRepository.RemoveItem(cartId, cartItemId);
-            return RedirectToPage();
-        }
-    }
+		public async Task<IActionResult> OnPostRemoveToCartAsync(int cartId, int cartItemId)
+		{
+			await _cartRepository.RemoveItem(cartId, cartItemId);
+			return RedirectToPage();
+		}
+	}
 }
