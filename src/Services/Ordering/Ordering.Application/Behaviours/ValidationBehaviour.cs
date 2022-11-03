@@ -1,6 +1,5 @@
 ﻿using FluentValidation;
 using MediatR;
-using Ordering.Application.Features.Orders.Commands.UpdateOrder;
 using Ordering.Domain.Exceptions;
 
 namespace Ordering.Application.Behaviours
